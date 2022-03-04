@@ -1,0 +1,22 @@
+{
+	"name": "goalsetter",
+	"version": "1.0.0",
+	"description": "goalsetter app",
+	"main": "server.js",
+	"author": "natnael-OQP",
+	"license": "MIT",
+	"private": null,
+	"scripts": {
+		"start": "node backend/server.js",
+		"server": "nodemon backend/server.js"
+	},
+	"dependencies": {
+		"colors": "^1.4.0",
+		"dotenv": "^16.0.0",
+		"express": "^4.17.3",
+		"mongoose": "^6.2.4"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
