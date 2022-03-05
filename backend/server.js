@@ -5,8 +5,6 @@ const dotenv = require("dotenv").config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-app.get("/api/goals", function (req, res) {
-	res.status(200).json({ name: "hello" });
-});
+app.use("/api/goals", require("./routes/goalRoutes"));
 
 app.listen(port);
