@@ -1,16 +1,70 @@
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
+// model
+const User = require("../models/user");
 
+// desc register user
+// route /api/users
+// access public
 const registerUser = asyncHandler(async (req, res) => {
-	res.status(200).json({ message: "register user" });
+	const { name, email, password } = req.body;
+	if (!name || !email || !password) {
+		res.status(400).json({ message: "fill in required fields" });
+	}
+	// check if user exists
+	const isExist = await User.findOne({ email });
+	if (isExist) {
+		res.status(400).json({ message: "email address already exists" });
+	}
+	// hash password
+	var salt = await bcrypt.genSalt(10);
+	var hash = await bcrypt.hash(password, salt);
+	// create user
+	const user = await User.create({
+		name,
+		email,
+		password: hash,
+	});
+	res.status(200).json({
+		_id: user._id,
+		name: user.name,
+		email: user.email,
+		token: getToken(user._id),
+	});
 });
 
+// desc:  user Authorization
+// route: /api/users/login
+// access: public
 const loginUser = asyncHandler(async (req, res) => {
-	res.status(200).json({ message: "login user" });
+	const { email, password } = req.body;
+	// check user email
+	const user = await User.findOne({ email });
+
+	if (user && (await bcrypt.compare(password, user.password))) {
+		res.status(200).json({
+			_id: user._id,
+			name: user.name,
+			email: user.email,
+			token: getToken(user._id),
+		});
+	} else {
+		res.status(400).json({ message: "Invalid email address or password" });
+	}
 });
 
+// desc:  get User Data
+// route: /api/users/me
+// access: Private
 const getMe = asyncHandler(async (req, res) => {
 	res.status(200).json({ message: "get me" });
 });
+
+// generate  token
+const getToken = (id) => {
+	return (token = jwt.sign({ id }, process.env.JWT, { expiresIn: "30d" }));
+};
 
 module.exports = {
 	registerUser,
