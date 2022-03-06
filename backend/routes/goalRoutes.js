@@ -7,10 +7,11 @@ const {
 	deleteGoal,
 	updateGoal,
 } = require("../controller/goalController");
+const protect = require("../middleware/authMiddleware");
 
 //  clean code
-router.route("/").get(getGoal).post(setGoal);
-router.route("/:id").delete(deleteGoal).put(updateGoal);
+router.route("/").get(protect, getGoal).post(protect, setGoal);
+router.route("/:id").delete(protect, deleteGoal).put(protect, updateGoal);
 
 // router.get("/", getGoal);
 // router.post("/", setGoal);
