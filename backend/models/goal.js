@@ -3,7 +3,15 @@ const { Schema } = mongoose;
 
 const goalSchema = new Schema(
 	{
-		text: { type: String, required: true },
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: "user",
+		},
+		text: {
+			type: String,
+			required: true,
+		},
 	},
 	{ timestamps: true }
 );
