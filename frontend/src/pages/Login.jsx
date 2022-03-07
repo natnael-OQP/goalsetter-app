@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 function Login() {
 	const [formData, setFormData] = useState({
@@ -19,10 +20,14 @@ function Login() {
 	const onSubmit = (e) => {
 		e.preventDefault();
 	};
-	console.log(formData);
+	const notify = () => {
+		toast("Default Notification !");
+	};
+
 	return (
 		<>
 			<section className="heading">
+				<button onClick={notify}>yes</button>
 				<h1>
 					<FaSignInAlt /> Register
 				</h1>
