@@ -58,12 +58,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // route: /api/users/me
 // access: Private
 const getMe = asyncHandler(async (req, res) => {
-	const { _id, name, email } = await User.findById(req.user.id);
-	res.status(200).json({
-		_id,
-		name,
-		email,
-	});
+	res.status(200).json(req.user);
 });
 
 // generate  token
