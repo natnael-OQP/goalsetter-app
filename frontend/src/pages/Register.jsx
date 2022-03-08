@@ -13,46 +13,53 @@ function Register() {
 		password: "",
 		password2: "",
 	});
-	// get value from input field
+
 	const { name, email, password, password2 } = formData;
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { user, isError, isSuccess, isLoading, message } = useSelector(
+
+	const { user, isLoading, isError, isSuccess, message } = useSelector(
 		(state) => state.auth
 	);
 	useEffect(() => {
 		if (isError) {
 			toast.error(message);
 		}
+
 		if (isSuccess || user) {
 			navigate("/");
 		}
+
 		dispatch(reset());
-	}, [user, isError, isSuccess, message, navigate, dispatch]);
+	}, [user, isError, isSuccess, message]);
 
 	const onChange = (e) => {
-		setFormData((prev) => ({
-			...prev,
+		setFormData((prevState) => ({
+			...prevState,
 			[e.target.name]: e.target.value,
 		}));
 	};
 
 	const onSubmit = (e) => {
 		e.preventDefault();
+
 		if (password !== password2) {
-			toast.error("password do not match!");
+			toast.error("Passwords do not match");
 		} else {
 			const userData = {
 				name,
 				email,
 				password,
 			};
+
 			dispatch(register(userData));
 		}
 	};
 
-	if (isLoading) return <Spinner />;
+	if (isLoading) {
+		return <Spinner />;
+	}
 
 	return (
 		<>
